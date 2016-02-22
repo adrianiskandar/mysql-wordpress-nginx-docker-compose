@@ -1,0 +1,26 @@
+nginx-proxy:
+  image: nginx
+  links:
+    - website:website
+  volumes:
+    - ./nginx:/etc/nginx
+  ports:
+    - "80:80"
+
+website:
+  image: wordpress
+  links:
+    - db:mysql
+  ports:
+    - "80"
+  volumes:
+    - ./wordpress:/var/www/html
+  environment:
+    WORDPRESS_DB_NAME: website
+
+db:
+  image: mysql
+  volumes:
+    - ./mysql:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: password
